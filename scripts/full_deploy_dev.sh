@@ -38,3 +38,6 @@ terraform apply \
 echo "Deployment completed."
 echo "Simulator image: ${IMAGE_URI}"
 terraform output simulator_service_uri
+
+echo "Applying BigQuery continuous query..."
+./scripts/apply_continuous_query.sh
