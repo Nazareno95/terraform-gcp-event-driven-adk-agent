@@ -1,0 +1,8 @@
+project_id = "dev-data-agent-493217"
+
+region            = "us-central1"
+bigquery_location = "US"
+environment       = "dev"
+
+delete_contents_on_destroy = true
+deletion_protection        = false
