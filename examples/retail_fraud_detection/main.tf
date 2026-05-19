@@ -58,3 +58,13 @@ module "cloud_run_simulator" {
   depends_on = [module.apis, module.pubsub, module.iam]
 }
 
+module "artifact_registry" {
+  source = "../../modules/artifact_registry"
+
+  project_id    = var.project_id
+  region        = var.region
+  repository_id = var.artifact_registry_repository_id
+  labels        = local.labels
+
+  depends_on = [module.apis]
+}

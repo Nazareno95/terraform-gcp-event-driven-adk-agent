@@ -12,3 +12,6 @@ output "agent_service_account_email" {
 output "simulator_service_uri" {
   value = module.cloud_run_simulator.service_uri
 }
+output "artifact_registry_repository_url" {
+  value = module.artifact_registry.docker_repository_url
+}

@@ -40,3 +40,7 @@ variable "simulator_image" {
   type    = string
   default = "us-docker.pkg.dev/cloudrun/container/hello"
 }
+variable "artifact_registry_repository_id" {
+  type    = string
+  default = "adk-agent-images"
+}
