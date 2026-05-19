@@ -68,3 +68,17 @@ module "artifact_registry" {
 
   depends_on = [module.apis]
 }
+module "cloud_run_agent" {
+  source = "../../modules/cloud_run_agent"
+
+  project_id            = var.project_id
+  region                = var.region
+  service_name          = "${var.name_prefix}-${var.environment}-agent"
+  image                 = var.agent_image
+  service_account_email = module.iam.service_account_email
+  dataset_id            = module.bigquery.dataset_id
+  audit_table           = "agent_audit_log"
+  labels                = local.labels
+
+  depends_on = [module.apis, module.bigquery, module.iam]
+}
