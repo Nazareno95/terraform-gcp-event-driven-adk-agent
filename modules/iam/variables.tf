@@ -17,6 +17,8 @@ variable "roles" {
     "roles/aiplatform.user",
     "roles/pubsub.publisher",
     "roles/run.invoker",
-    "roles/artifactregistry.reader"
+    "roles/artifactregistry.reader",
+    "roles/iam.serviceAccountTokenCreator",
+    "roles/bigquery.dataEditor"
   ]
 }

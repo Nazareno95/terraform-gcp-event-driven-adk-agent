@@ -24,3 +24,12 @@ variable "labels" {
   type    = map(string)
   default = {}
 }
+variable "push_endpoint" {
+  type    = string
+  default = null
+}
+
+variable "push_service_account_email" {
+  type    = string
+  default = null
+}

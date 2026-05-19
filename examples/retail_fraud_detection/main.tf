@@ -31,11 +31,14 @@ module "bigquery" {
 module "pubsub" {
   source = "../../modules/pubsub"
 
-  project_id        = var.project_id
-  topic_name        = "${var.name_prefix}-${var.environment}-events"
-  subscription_name = "${var.name_prefix}-${var.environment}-agent-sub"
-  labels            = local.labels
-  depends_on        = [module.apis]
+  project_id                 = var.project_id
+  topic_name                 = "${var.name_prefix}-${var.environment}-events"
+  subscription_name          = "${var.name_prefix}-${var.environment}-agent-sub"
+  push_endpoint              = module.cloud_run_agent.service_uri
+  push_service_account_email = module.iam.service_account_email
+  labels                     = local.labels
+
+  depends_on = [module.apis, module.cloud_run_agent]
 }
 
 module "iam" {
