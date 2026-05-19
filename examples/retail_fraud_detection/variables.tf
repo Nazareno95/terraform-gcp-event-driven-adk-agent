@@ -36,3 +36,7 @@ variable "deletion_protection" {
   type    = bool
   default = false
 }
+variable "simulator_image" {
+  type    = string
+  default = "us-docker.pkg.dev/cloudrun/container/hello"
+}

@@ -25,7 +25,7 @@ module "bigquery" {
   delete_contents_on_destroy = var.delete_contents_on_destroy
   deletion_protection        = var.deletion_protection
   labels                     = local.labels
-  depends_on = [module.apis]
+  depends_on                 = [module.apis]
 }
 
 module "pubsub" {
@@ -35,7 +35,7 @@ module "pubsub" {
   topic_name        = "${var.name_prefix}-${var.environment}-events"
   subscription_name = "${var.name_prefix}-${var.environment}-agent-sub"
   labels            = local.labels
-  depends_on = [module.apis]
+  depends_on        = [module.apis]
 }
 
 module "iam" {
@@ -43,5 +43,18 @@ module "iam" {
 
   project_id = var.project_id
   depends_on = [module.apis]
+}
+module "cloud_run_simulator" {
+  source = "../../modules/cloud_run_simulator"
+
+  project_id            = var.project_id
+  region                = var.region
+  service_name          = "${var.name_prefix}-${var.environment}-simulator"
+  image                 = var.simulator_image
+  service_account_email = module.iam.service_account_email
+  pubsub_topic_name     = module.pubsub.topic_name
+  labels                = local.labels
+
+  depends_on = [module.apis, module.pubsub, module.iam]
 }
 
