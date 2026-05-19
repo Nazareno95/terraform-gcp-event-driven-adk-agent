@@ -85,3 +85,12 @@ module "cloud_run_agent" {
 
   depends_on = [module.apis, module.bigquery, module.iam]
 }
+module "observability" {
+  source = "../../modules/observability"
+
+  project_id           = var.project_id
+  dataset_id           = module.bigquery.dataset_id
+  deletion_protection  = false
+
+  depends_on = [module.bigquery]
+}

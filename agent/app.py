@@ -2,7 +2,7 @@ import base64
 import json
 import os
 from datetime import datetime, timezone
-
+import time
 from flask import Flask, jsonify, request
 from google.cloud import bigquery
 
@@ -17,6 +17,7 @@ bq_client = bigquery.Client(project=PROJECT_ID)
 
 @app.route("/", methods=["POST"])
 def handle_pubsub_event():
+    start_time = time.time()
     envelope = request.get_json(silent=True)
 
     if not envelope or "message" not in envelope:
@@ -48,4 +49,17 @@ def handle_pubsub_event():
     if errors:
         return jsonify({"errors": errors}), 500
 
+    latency_ms = (time.time() - start_time) * 1000
+
+    metrics_row = {
+    "metric_timestamp": datetime.now(timezone.utc).isoformat(),
+    "events_processed": 1,
+    "high_risk_events": 1 if decision == "review_required" else 0,
+    "processing_latency_ms": latency_ms,
+    }
+
+    metrics_table = f"{PROJECT_ID}.{DATASET_ID}.agent_metrics"
+
+    bq_client.insert_rows_json(metrics_table, [metrics_row])
+    
     return jsonify({"status": "processed", "decision": decision})
